@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from .models import playlist_user
 from django.urls.base import reverse
 from django.contrib.auth import authenticate,login,logout
-from django.contrib.auth.decorators import login_required
 from youtube_search import YoutubeSearch
 import json
 # import cardupdate
