@@ -2,6 +2,7 @@ from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from .models import playlist_user
+from .forms import User_login_form, Password_reset_email_form, Password_reset_form
 from django.urls.base import reverse
 from django.contrib.auth import authenticate,login,logout
 from youtube_search import YoutubeSearch
@@ -35,11 +36,25 @@ def login(request):
             return redirect('/')
         else:
             return HttpResponse("Invalid credentials")
-    return render(request, 'login.html')
+    
+    form = User_login_form()
+
+    return render(request, 'login.html', {'form':form})
 
 def logout(request):
     logout(request)
     return redirect('/login')
+
+#reset password
+def password_reset(request):
+   form = Password_reset_email_form()
+   return render(request, 'password_reset.html', {'form': form})
+
+def password_reset_confirm(request, uidb64, token):
+    if request.method == 'POST':
+       return 0
+    form = Password_reset_form()
+    return render(request, 'password_reset_confirm.html', {'form': form})
 
 
 f = open('card.json', 'r')
