@@ -128,8 +128,6 @@ STATICFILES_DIRS = [
     '/var/www/static/',
 ]
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-<<<<<<< HEAD
-=======
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -139,4 +137,3 @@ EMAIL_USE_SSL = True  # Usar SSL en lugar de TLS
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER')
->>>>>>> 95b6529 (bug luego de cambiar la password_reset_confirm not found)

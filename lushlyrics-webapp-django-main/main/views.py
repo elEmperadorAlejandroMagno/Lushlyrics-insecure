@@ -47,10 +47,6 @@ def logout(request):
 
 #reset password
 def password_reset(request):
-<<<<<<< HEAD
-   form = Password_reset_email_form()
-   return render(request, 'password_reset.html', {'form': form})
-=======
     if request.method == 'POST':
         form = Password_reset_email_form(request.POST)
         if form.is_valid():
@@ -82,7 +78,6 @@ def password_reset(request):
                 return HttpResponse("User does not exist")
     form = Password_reset_email_form()
     return render(request, 'registration/password_reset.html', {'form': form})
->>>>>>> 95b6529 (bug luego de cambiar la password_reset_confirm not found)
 
 def password_reset_confirm(request, uidb64, token):
     if request.method == 'POST':
