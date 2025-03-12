@@ -7,24 +7,40 @@ from django.urls.base import reverse
 from django.contrib.auth import authenticate,login,logout
 from youtube_search import YoutubeSearch
 import json
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
 # import cardupdate
 
 
 def singup(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        email = request.POST['email']
-        password = request.POST['password']
-        if not username or not email or not password:
-            return HttpResponse("Please fill all the fields")
+        form = Singup_form(request.POST)
+        if not form.is_valid():
+            return HttpResponse("Invalid form")
+        
+        password = form.cleaned_data['password']
+        confirm_password = form.cleaned_data['confirm_password']
+        username = form.cleaned_data['username']
+        email = form.cleaned_data['email']
+
+        if password != confirm_password:
+            return HttpResponse("Passwords do not match")
+        
         if User.objects.filter(username=username).exists():
             return HttpResponse("Username already exists")
+        
         if User.objects.filter(email=email).exists():
            return HttpResponse("Email has already been registered")
+        
         user = User.objects.create_user(username=username, email=email,password=password)
         playlist_user.objects.create(username=user)
         return redirect('/login')
-    return render(request, 'signup.html')
+    
+    form = Singup_form()
+    return render(request, 'singup.html', {'form': form})
 
 def login(request):
     if request.method == 'POST':
@@ -53,13 +69,8 @@ def password_reset(request):
             email = form.cleaned_data['email']
             if User.objects.filter(email=email).exists():
                 user = User.objects.get(email=email)
-                # Send password reset email
-                from django.core.mail import send_mail
-                from django.template.loader import render_to_string
-                from django.utils.http import urlsafe_base64_encode
-                from django.utils.encoding import force_bytes
-                from django.contrib.auth.tokens import default_token_generator
 
+                # Send password reset email
                 subject = "Password Reset Requested"
                 email_template_name = "registration/password_reset_email.html"
                 context = {
@@ -80,10 +91,24 @@ def password_reset(request):
     return render(request, 'registration/password_reset.html', {'form': form})
 
 def password_reset_confirm(request, uidb64, token):
+    try: 
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
     if request.method == 'POST':
-       return 0
+        form = Password_reset_form(request.POST)
+        if form.is_valid() and user is not None and default_token_generator.check_token(user, token):
+            new_password = form.cleaned_data['new_password']
+            confirm_new_password = form.cleaned_data['confirm_new_password']
+            if new_password != confirm_new_password:
+                return HttpResponse("Passwords do not match")
+            user.set_password(new_password)
+            user.save()
+            return redirect('/reset_password_complete')
     form = Password_reset_form()
-    return render(request, 'password_reset_confirm.html', {'form': form})
+    return render(request, 'registration/password_reset_confirm.html', {'form': form, 'uidb64': uidb64, 'token': token})
 
 
 f = open('card.json', 'r')
