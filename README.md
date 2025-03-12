@@ -13,6 +13,7 @@ $ cd lushlyrics-webapp-django
 ```
 
 Create a virtual environment to install dependencies in and activate it:
+You can use python-dotenv
 
 ```sh
 $ virtualenv2 --no-site-packages env
