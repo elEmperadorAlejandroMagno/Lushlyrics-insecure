@@ -2,6 +2,8 @@
 
 
 ## Setup
+Django upgraded to 5.1
+Python version 3.12
 
 The first thing to do is to clone the repository:
 
