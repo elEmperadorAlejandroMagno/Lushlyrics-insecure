@@ -13,11 +13,25 @@ $ cd lushlyrics-webapp-django
 ```
 
 Create a virtual environment to install dependencies in and activate it:
-You can use python-dotenv
 
 ```sh
 $ virtualenv2 --no-site-packages env
 $ source env/bin/activate
+```
+
+With Python venv:
+```sh
+$ python -m venv virtual_environment_name
+```
+
+In Windows:
+```sh
+virtual_environment_name\Scripts\activate
+```
+
+In macOS and Linux:
+```sh
+source virtual_environment_name\bin\activate
 ```
 
 Then install the dependencies:
@@ -26,7 +40,7 @@ Then install the dependencies:
 (env)$ pip install -r requirements.txt
 ```
 Note the `(env)` in front of the prompt. This indicates that this terminal
-session operates in a virtual environment set up by `virtualenv2`.
+session operates in a virtual environment.
 
 Once `pip` has finished downloading the dependencies:
 ```sh
