@@ -12,12 +12,14 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib import messages
 
 def singup(request):
     if request.method == 'POST':
         form = Singup_form(request.POST)
         if not form.is_valid():
-            return HttpResponse("Invalid form")
+            messages.error(request, 'Invalid form')
+            return render(request, 'singup.html', {'form': form})
         
         password = form.cleaned_data['password']
         confirm_password = form.cleaned_data['confirm_password']
@@ -25,16 +27,20 @@ def singup(request):
         email = form.cleaned_data['email']
 
         if password != confirm_password:
-            return HttpResponse("Passwords do not match")
+            messages.error(request, 'Passwords do not match')
+            return render(request, 'singup.html', {'form': form})
         
         if User.objects.filter(username=username).exists():
-            return HttpResponse("Username already exists")
+            messages.error(request, 'Username already exists')
+            return render(request, 'singup.html', {'form': form})
         
         if User.objects.filter(email=email).exists():
-           return HttpResponse("Email has already been registered")
+            messages.error(request, 'Email has already been registered')
+            return render(request, 'singup.html', {'form': form})
         
         user = User.objects.create_user(username=username, email=email,password=password)
         playlist_user.objects.create(username=user)
+        messages.success(request, 'Account created successfully')
         return redirect('/login')
     
     form = Singup_form()
@@ -49,7 +55,8 @@ def login(request):
             login(request,user)
             return redirect('/')
         else:
-            return HttpResponse("Invalid credentials")
+            messages.error(request, 'Invalid credentials')
+            return render(request, 'login.html', {'form': User_login_form()})
     
     form = User_login_form()
 
@@ -84,7 +91,8 @@ def password_reset(request):
                 send_mail(subject, email, 'admin@yourdomain.com', [user.email], fail_silently=False)
                 return redirect(reverse('reset_password_done'))
             else:
-                return HttpResponse("User does not exist")
+                messages.error(request, 'User does not exist')
+                return render(request, 'registration/password_reset.html', {'form': form})
     form = Password_reset_email_form()
     return render(request, 'registration/password_reset.html', {'form': form})
 
@@ -101,7 +109,8 @@ def password_reset_confirm(request, uidb64, token):
             new_password = form.cleaned_data['new_password']
             confirm_new_password = form.cleaned_data['confirm_new_password']
             if new_password != confirm_new_password:
-                return HttpResponse("Passwords do not match")
+                messages.error(request, 'Passwords do not match')
+                return render(request, 'registration/password_reset_confirm.html', {'form': form, 'uidb64': uidb64, 'token': token})
             user.set_password(new_password)
             user.save()
             return redirect('/reset_password_complete')

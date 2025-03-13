@@ -11,13 +11,20 @@
 <body>
     <div class="container">
       <div class="form">
-        <h2>Create new account</h2>
-        <form action="{% url 'singup' %}" method="post">
-          {% csrf_token %}
-          {{ form.as_div }}
-          <input type="submit" value="Sing Up">
-        </form>
-        <p>¿Have an account? <a href="/login">Login</a></p>
+          <h2>Create new account</h2>
+          {% if messages %}
+            <ul>
+              {% for message in messages %}
+                <h3 class="{{ message.tags }}">{{ message }}</h3>
+              {% endfor %}
+            </ul>
+          {% endif %}
+          <form action="{% url 'singup' %}" method="post">
+            {% csrf_token %}
+            {{ form.as_div }}
+            <input type="submit" value="Sing Up">
+          </form>
+          <p>¿Have an account? <a href="/login">Login</a></p>
       </div>
     </div>
   </div>
