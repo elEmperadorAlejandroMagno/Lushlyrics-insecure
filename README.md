@@ -48,3 +48,11 @@ cd Lushlyrics-insecure
 python manage.py runserver
 ```
 And navigate to `http://127.0.0.1:8000/`.
+
+To make password reset process work, you have to create a .env file and write your environment variables:
+```
+EMAIL_HOST_USER='admin_mail'
+EMAIL_HOST_PASSWORD='admin_mail_password_generated_for_apps'
+```
+
+If you don't know how to generate a password for apps, google has it's own tutorial.
