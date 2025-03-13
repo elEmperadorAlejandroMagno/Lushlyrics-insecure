@@ -65,14 +65,18 @@ input[type="text"], [type="email"], [type="password"] {
 }
 
 input[type="submit"] {
+  font-family: Circular, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 1em;
+  font-weight: 600;
   background-color: #282424;
   color: #fefefe;
   min-width: 100px;
   margin-top: 20px;
   padding: 10px 14px;
   border-radius: 25px;
+  transition: all 0.8s;
   &:hover {
     cursor: pointer;
-    background-color: #b72515;
+    color: #1DB954;
   }
 }

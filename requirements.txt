@@ -1,4 +1,5 @@
-Django==3.0.7
+Django==5.1.7
 youtube-search==1.1.1
 spotipy==2.16.1
 youtube-search==1.1.1
+python-dotenv==0.19.2

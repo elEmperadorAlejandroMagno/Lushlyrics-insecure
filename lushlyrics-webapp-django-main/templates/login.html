@@ -12,10 +12,6 @@
     <div class="container">
       <div class="form">
         <h2>Login</h2>
-<<<<<<< HEAD
-      </div>
-      <a href="/reset-password"><h3>¿Has olvidado tu contraseña?</h3></a>
-=======
         <form action="{% url 'login' %}" method="post">
           {% csrf_token %}
           {{ form.as_div }}
@@ -24,7 +20,6 @@
         <p><a href="/singup">Create new account</a></p>
         <p>¿Have you forgot the password? <a href="/reset_password">Reset password</a></p>
       </div>
->>>>>>> c2b66be (Authetication done. Formularios css done)
     </div>
 </body>
 </html>
