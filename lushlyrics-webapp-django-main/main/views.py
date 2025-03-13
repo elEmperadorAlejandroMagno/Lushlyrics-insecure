@@ -47,8 +47,42 @@ def logout(request):
 
 #reset password
 def password_reset(request):
+<<<<<<< HEAD
    form = Password_reset_email_form()
    return render(request, 'password_reset.html', {'form': form})
+=======
+    if request.method == 'POST':
+        form = Password_reset_email_form(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            if User.objects.filter(email=email).exists():
+                user = User.objects.get(email=email)
+                # Send password reset email
+                from django.core.mail import send_mail
+                from django.template.loader import render_to_string
+                from django.utils.http import urlsafe_base64_encode
+                from django.utils.encoding import force_bytes
+                from django.contrib.auth.tokens import default_token_generator
+
+                subject = "Password Reset Requested"
+                email_template_name = "registration/password_reset_email.html"
+                context = {
+                    "email": user.email,
+                    "domain": request.META['HTTP_HOST'],
+                    "site_name": "Website",
+                    "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                    "user": user,
+                    "token": default_token_generator.make_token(user),
+                    "protocol": "http",
+                }
+                email = render_to_string(email_template_name, context)
+                send_mail(subject, email, 'admin@yourdomain.com', [user.email], fail_silently=False)
+                return redirect(reverse('reset_password_done'))
+            else:
+                return HttpResponse("User does not exist")
+    form = Password_reset_email_form()
+    return render(request, 'registration/password_reset.html', {'form': form})
+>>>>>>> 95b6529 (bug luego de cambiar la password_reset_confirm not found)
 
 def password_reset_confirm(request, uidb64, token):
     if request.method == 'POST':
