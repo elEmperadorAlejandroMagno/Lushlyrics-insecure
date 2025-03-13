@@ -1,6 +1,12 @@
 from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy
 from youtube_search import YoutubeSearch
+import dotenv
+import os
+
+dotenv.load_dotenv()
+CLIENT_ID = os.getenv('SPOTIPY_CLIENT_ID')
+CLIENT_SECRET = os.getenv('SPOTIPY_CLIENT_SECRET')
 
 PLAYLISTS = [['Accidental','https://open.spotify.com/playlist/0zJ8hC8YJOcHYuk5nMPFm8?si=U6Kyom3XQ32reSuVgl2uhA', "PL59eqqQABruMQOPlUVcVsIid685ZdwDjf"],
 ['TimePass','https://open.spotify.com/playlist/6gADLrLFK1kXgEEOsENi1c', "PL59eqqQABruMSx6VSy1hbkBhG4XwtgSuy"],
@@ -8,8 +14,8 @@ PLAYLISTS = [['Accidental','https://open.spotify.com/playlist/0zJ8hC8YJOcHYuk5nM
 ['Programming & Coding Music','https://open.spotify.com/playlist/6vWEpKDjVitlEDrOmLjIAj', 'PL59eqqQABruNew5O0cRvomfbU6FI0RGyl'],
 ['Spanish','https://open.spotify.com/playlist/75QJ1JeFaeSm0uH1znWxb0?si=Lt4kd-RARBu2TQz35RAQiQ', 'PL59eqqQABruM3TLAGthvgW10c1R6omGwq']
 ]
-client_credentials_manager = SpotifyClientCredentials(client_id='e5d66c188ef64dd89afa4d13f9555411',
-                client_secret='d070988d7bd5479a9e0818fa23839544')
+client_credentials_manager = SpotifyClientCredentials(client_id=CLIENT_ID,
+                client_secret=CLIENT_SECRET)
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
 
